@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@v2.0.0
+        uses: appleboy/ssh-action@master
         with:
           host: 107.178.217.199
           username: ${{ secrets.USERNAME }}
