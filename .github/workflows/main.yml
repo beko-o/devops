@@ -24,5 +24,4 @@ jobs:
             cd /home/meninpowtam/django_deploy_app/project
             git pull
             python manage.py migrate
-            docker ps
-            docker exec -t <container_id> supervisorctl restart all
+            sudo supervisorctl restart all
