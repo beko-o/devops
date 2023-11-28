@@ -20,9 +20,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd /home/meninpowtam/django_deploy_app/project
             source /home/meninpowtam/venv/bin/activate
+            cd /home/meninpowtam/django_deploy_app/project
             git pull
             python manage.py migrate
-            python manage.py collectstatic --noinput
-            sudo supervisorctl restart all
+            supervisorctl restart all
