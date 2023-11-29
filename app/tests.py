@@ -11,64 +11,30 @@ class Test(TestCase):
         self.assertEqual(2, 2)
     def test_3(self):
         self.assertEqual(3, 3)
-    # def test_add_product_command(self):
-    #     # Mocking user input
-    #     user_input = "/add TestProduct 10.0 TestDescription 5"
-        
-    #     with patch('builtins.input', side_effect=user_input.split()), \
-    #          patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-    #         # Call the management command
-    #         call_command('run_telegram_bot')
+    def setUp(self):
+        self.product = Product.objects.create(
+            name='Test Product',
+            description='This is a test product.',
+            price=19.99,
+            quantity_available=100,
+        )
 
-    #     # Check if the product is added to the database
-    #     product = Product.objects.get(name="TestProduct")
-    #     self.assertEqual(product.price, 10.0)
-    #     self.assertEqual(product.description, "TestDescription")
-    #     self.assertEqual(product.quantity_available, 5)
+    def test_product_creation(self):
+        """Test whether the product is created correctly."""
+        self.assertEqual(self.product.name, 'Test Product')
+        self.assertEqual(self.product.description, 'This is a test product.')
+        self.assertEqual(self.product.price, 19.99)
+        self.assertEqual(self.product.quantity_available, 100)
 
-    #     # Check the output for success message
-    #     self.assertIn("Product 'TestProduct' added successfully!", mock_stdout.getvalue())
+    def test_product_str_method(self):
+        """Test the __str__ method of the product."""
+        self.assertEqual(str(self.product), 'Test Product')
 
-    # def test_invalid_add_product_command(self):
-    #     # Mocking invalid user input
-    #     invalid_user_input = "/add InvalidInput"
-        
-    #     with patch('builtins.input', side_effect=invalid_user_input.split()), \
-    #          patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-    #         # Call the management command
-    #         call_command('run_telegram_bot')
-
-    #     # Check the output for the error message
-    #     self.assertIn("Invalid format. Use: /add <product_name> <product_price> <product_description> <quantity_available>", mock_stdout.getvalue())
-    
-    # def test_help_command(self):
-    #     # Mocking user input for /help command
-    #     user_input = "/help"
-        
-    #     with patch('builtins.input', side_effect=user_input.split()), \
-    #          patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-    #         # Call the management command
-    #         call_command('run_telegram_bot')
-
-    #     # Check the output for the help message
-    #     commands_list = [
-    #         "/start - Start the bot",
-    #         "/help - Display available commands",
-    #         "/products - Display a list of products",
-    #         "/add <product_name> <product_price> <product_description> <quantity_available> - Add a new product",
-    #         "any text - Echo the text"
-    #     ]
-    #     expected_output = "\n".join(commands_list)
-    #     self.assertIn(expected_output, mock_stdout.getvalue())
-
-    # def test_echo_command(self):
-    #     # Mocking user input for any text command
-    #     user_input = "Hello, bot!"
-        
-    #     with patch('builtins.input', side_effect=user_input.split()), \
-    #          patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-    #         # Call the management command
-    #         call_command('run_telegram_bot')
-
-    #     # Check the output for the echoed message
-    #     self.assertIn(user_input, mock_stdout.getvalue())
+    def test_product_quantity_default(self):
+        """quantity_available has a default 0."""
+        new_product = Product.objects.create(
+            name='Another Test Product',
+            description='Another test product description.',
+            price=29.99,
+        )
+        self.assertEqual(new_product.quantity_available, 0)
